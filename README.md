@@ -2,5 +2,3 @@
 [![SchoolBoy-Runaway-Esp Build](https://github.com/FlutterGenerator/SchoolBoy-Runaway-Esp/actions/workflows/build-apk.yml/badge.svg)](https://github.com/FlutterGenerator/SchoolBoy-Runaway-Esp/actions/workflows/build-apk.yml)
 
 # School Boy Runaway
-
-![](img.jpg)
