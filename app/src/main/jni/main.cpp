@@ -30,6 +30,9 @@
 ESPManager *espManager;
 NepEsp es;
 
+#include <Substrate/SubstrateHook.h>
+#include <Substrate/CydiaSubstrate.h>
+
 bool ESP, ESPLine, ESPBox;
 
 float width = 1.0f;
