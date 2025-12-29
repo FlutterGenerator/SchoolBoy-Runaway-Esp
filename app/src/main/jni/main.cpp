@@ -20,7 +20,7 @@
 #include "Includes/Utils.h"
 #include "Includes/MonoString.h"
 #include "Includes/Strings.h"
-#include "Includes/Chams.h"
+
 #include "KittyMemory/MemoryPatch.h"
 #include "menu.h"
 
@@ -37,8 +37,6 @@ NepEsp es;
 #include <Substrate/CydiaSubstrate.h>
 
 bool ESP, ESPLine, ESPBox;
-
-bool chams, shading, wireframe, glow, outline, rainbow = false;
 
 float width = 1.0f;
 Color color = Color::White();
@@ -92,7 +90,6 @@ if(ESP) {
         Vector2 DrawFromTop = Vector2(screenWidth / 2, screenHeight / 0);
         Vector2 DrawFromCenter = Vector2(screenWidth / 2, screenHeight / 2);
         Vector2 DrawFromBottom = Vector2(screenWidth / 2, screenHeight / 1);
-        
         Vector2 DrawTo = Vector2((screenWidth- (screenWidth - PosNew.x)) + 5, (screenHeight - PosNew.y - 10.0f));
         
         if (ESPLine){
@@ -168,9 +165,6 @@ void *hack_thread(void *) {
         il2cppMap = KittyMemory::getLibraryMap("libil2cpp.so");
         sleep(1);
     } while (!il2cppMap.isValid() && mlovinit());
-	setShader("_MainTex");
-    LogShaders();
-    Wallhack();
     espManager = new ESPManager();
     
     //Check if target lib is loaded
@@ -198,12 +192,6 @@ extern "C" {
             "200_Toggle_Esp Line",
             "300_Toggle_Esp Box",
             "400_RadioButton__Top,Center,Down",
-		    "500_Category_Chams Menu", //Not Counted
-            "600_ButtonOnOff_Default Chams", //600 Case
-            "700_ButtonOnOff_Wireframe Chams", //700 Case
-            "800_ButtonOnOff_Glow Chams", //800 Case
-            "900_ButtonOnOff_Outline Chams", //900 Case
-            "1000_ButtonOnOff_Rainbow Chams", //1000 Case
             
         };
         int Total_Feature = (sizeof features / sizeof features[0]);
@@ -239,26 +227,6 @@ extern "C" {
         case 400:
         patches.setLinePosition = value;
         break;
-
-		case 600:
-		SetWallhack(boolean);
-		break;
-			
-		case 700:
-		SetWallhackW(boolean);
-		break;
-		
-		case 800:
-		SetWallhackG(boolean);
-		break;
-		
-		case 900:
-		SetWallhackO(boolean);
-		break;
-		
-		case 1000:
-		SetRainbow(boolean);
-		break;
 		
         }
     }
@@ -271,6 +239,4 @@ void lib_main() {
     pthread_create(&ptid, NULL, hack_thread, NULL);
 }
 
-
 // Check platinmods.com site for more info about esp making.
-
