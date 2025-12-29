@@ -164,7 +164,7 @@ void *hack_thread(void *) {
     do {
         il2cppMap = KittyMemory::getLibraryMap("libil2cpp.so");
         sleep(1);
-    } while (!il2cppMap.isValid() && mlovinit());
+    } while (!isLibraryLoaded("libil2cpp.so"));
     espManager = new ESPManager();
     
     //Check if target lib is loaded
