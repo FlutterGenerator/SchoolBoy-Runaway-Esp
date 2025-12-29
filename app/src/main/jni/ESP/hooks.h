@@ -1,16 +1,14 @@
-
 namespace Offset{
 enum {
 
-_position = 0x17E7640, // Transform -- get_position_injected
-_transform = 0x17D78B8, // Component -- get_transform
-_main = 0x17A9248, // Camera -- get_main
-_worldtoscreenpoint = 0x17A8C60, // Camera -- worldtoscreenpoint_injected
-_dead = 0x14F1F14, //get_IsAlive
+_position = 0x17F2960, // Transform -- get_position_injected
+_transform = 0x17E2BD8, // Component -- get_transform
+_main = 0x17B3F30, // Camera -- get_main
+_worldtoscreenpoint = 0x17B3948, // Camera -- worldtoscreenpoint_injected
+_dead = 0x14FCBFC, //get_IsAlive
 
 };
 }
-
 
 //Class.Component
 //get_transform
@@ -83,4 +81,3 @@ bool PlayerAlive(void *player) {
 bool IsPlayerDead(void *player) {
     return player == NULL && GetPlayerDead(player) < 1;
 }
-
