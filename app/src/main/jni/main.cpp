@@ -170,7 +170,7 @@ void *hack_thread(void *) {
     } while (!il2cppMap.isValid() && mlovinit());
 	setShader("_MainTex");
     LogShaders();
-    Wallhack();;
+    Wallhack();
     espManager = new ESPManager();
     
     //Check if target lib is loaded
