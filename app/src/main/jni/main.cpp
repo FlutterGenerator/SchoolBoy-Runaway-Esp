@@ -28,8 +28,7 @@
 #include "ESP/Drawing.h"
 #include "ESP/ESPManager.h"
 
-//Target lib here
-#define targetLibName ("libil2cpp.so")
+#define targetLibName OBFUSCATE("libil2cpp.so")
 
 ESPManager *espManager;
 NepEsp es;
@@ -37,7 +36,9 @@ NepEsp es;
 #include <Substrate/SubstrateHook.h>
 #include <Substrate/CydiaSubstrate.h>
 
-bool ESP, ESPLine, ESPBox, chams, shading, wireframe, glow, outline, rainbow = false;
+bool ESP, ESPLine, ESPBox;
+
+bool chams, shading, wireframe, glow, outline, rainbow = false;
 
 float width = 1.0f;
 Color color = Color::White();
@@ -164,12 +165,15 @@ void _ondestroy(void *player) {
 void *hack_thread(void *) {
     ProcMap il2cppMap;
     do {
-        il2cppMap = KittyMemory::getLibraryMap(targetLibName);
+        il2cppMap = KittyMemory::getLibraryMap("libil2cpp.so");
         sleep(1);
     } while (!il2cppMap.isValid() && mlovinit());
 	setShader("_MainTex");
+    LogShaders();
+    Wallhack();;
     espManager = new ESPManager();
     
+    //Check if target lib is loaded
     do {
         sleep(1);
     } while (!isLibraryLoaded(targetLibName)); //dont forget to change this, if you change your lib
