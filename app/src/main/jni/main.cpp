@@ -174,8 +174,8 @@ void *hack_thread(void *) {
         sleep(1);
     } while (!isLibraryLoaded(targetLibName)); //dont forget to change this, if you change your lib
 
-    // Offset you want Target object of your Esp
-    MSHookFunction((void *) getAbsoluteAddress("libil2cpp.so", 0x15A8658), (void *) &_update, (void **) &update);
+    // Offset you want Target object of your Esp public sealed class FaceActor : MonoBehaviour, IPreviewable private void LateUpdate() { }
+    MSHookFunction((void *) getAbsoluteAddress("libil2cpp.so", 0x15B3340), (void *) &_update, (void **) &update);
     
     // Offset to Fix the Crash Problem
      //MSHookFunction((void *) getAbsoluteAddress("libil2cpp.so", 0xBF7028), (void *) &_ondestroy, (void **) &ondestroy);
