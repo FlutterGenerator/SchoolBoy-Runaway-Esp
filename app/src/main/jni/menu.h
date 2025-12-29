@@ -29,7 +29,7 @@ void setText(JNIEnv *env, jobject obj, const char* text){
 extern "C" {
 JNIEXPORT void JNICALL
 Java_uk_lgl_modmenu_FloatingModMenuService_setTitleText(JNIEnv *env, jobject thiz, jobject obj) {
-    setText(env, obj, OBFUSCATE("<b>SchoolBoy Runaway 1.01</b>"));
+    setText(env, obj, OBFUSCATE("<b>SchoolBoy Runaway 1.03</b>"));
 
     titleValid = true;
 }
