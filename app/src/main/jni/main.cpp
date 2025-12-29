@@ -20,6 +20,7 @@
 #include "Includes/Utils.h"
 #include "Includes/MonoString.h"
 #include "Includes/Strings.h"
+#include "Includes/Chams.h"
 #include "KittyMemory/MemoryPatch.h"
 #include "menu.h"
 
@@ -27,13 +28,16 @@
 #include "ESP/Drawing.h"
 #include "ESP/ESPManager.h"
 
+//Target lib here
+#define targetLibName ("libil2cpp.so")
+
 ESPManager *espManager;
 NepEsp es;
 
 #include <Substrate/SubstrateHook.h>
 #include <Substrate/CydiaSubstrate.h>
 
-bool ESP, ESPLine, ESPBox;
+bool ESP, ESPLine, ESPBox, chams, shading, wireframe, glow, outline, rainbow = false;
 
 float width = 1.0f;
 Color color = Color::White();
@@ -42,7 +46,6 @@ struct My_Patches {
 MemoryPatch godMode;
 int setLinePosition = 0;
 } patches;
-
 
 void DrawESP(NepEsp esp, int screenWidth, int screenHeight) {
 
@@ -134,7 +137,6 @@ Java_uk_lgl_modmenu_FloatingModMenuService_DrawOn(JNIEnv *env, jclass type, jobj
     
  }
 
-
 void *enemyPlayer = NULL;
 void (*update)(void *player);
 void _update(void *player) {
@@ -159,25 +161,24 @@ void _ondestroy(void *player) {
 }
 */
 
-
 void *hack_thread(void *) {
     ProcMap il2cppMap;
     do {
-        il2cppMap = KittyMemory::getLibraryMap("libil2cpp.so");
+        il2cppMap = KittyMemory::getLibraryMap(targetLibName);
         sleep(1);
-    } while (!isLibraryLoaded("libil2cpp.so"));
+    } while (!il2cppMap.isValid() && mlovinit());
+	setShader("_MainTex");
     espManager = new ESPManager();
     
     do {
         sleep(1);
-    } while (!isLibraryLoaded (OBFUSCATE("libMyLibName.so"))); //dont forget to change this, if you change your lib
+    } while (!isLibraryLoaded(targetLibName)); //dont forget to change this, if you change your lib
 
     // Offset you want Target object of your Esp
     MSHookFunction((void *) getAbsoluteAddress("libil2cpp.so", 0x15A8658), (void *) &_update, (void **) &update);
     
     // Offset to Fix the Crash Problem
      //MSHookFunction((void *) getAbsoluteAddress("libil2cpp.so", 0xBF7028), (void *) &_ondestroy, (void **) &ondestroy);
-	
 	
     return NULL;
 }
@@ -189,10 +190,16 @@ extern "C" {
         jobjectArray ret;
         const char *features[] = {
             
-            "100_Toggle_ Enable Esp ",
-            "200_Toggle_ Esp Line ",
-            "300_Toggle_ Esp Box ",
+            "100_Toggle_Enable Esp",
+            "200_Toggle_Esp Line",
+            "300_Toggle_Esp Box",
             "400_RadioButton__Top,Center,Down",
+		    "500_Category_Chams Menu", //Not Counted
+            "600_ButtonOnOff_Default Chams", //600 Case
+            "700_ButtonOnOff_Wireframe Chams", //700 Case
+            "800_ButtonOnOff_Glow Chams", //800 Case
+            "900_ButtonOnOff_Outline Chams", //900 Case
+            "1000_ButtonOnOff_Rainbow Chams", //1000 Case
             
         };
         int Total_Feature = (sizeof features / sizeof features[0]);
@@ -228,7 +235,27 @@ extern "C" {
         case 400:
         patches.setLinePosition = value;
         break;
-        
+
+		case 600:
+		SetWallhack(boolean);
+		break;
+			
+		case 700:
+		SetWallhackW(boolean);
+		break;
+		
+		case 800:
+		SetWallhackG(boolean);
+		break;
+		
+		case 900:
+		SetWallhackO(boolean);
+		break;
+		
+		case 1000:
+		SetRainbow(boolean);
+		break;
+		
         }
     }
 }
