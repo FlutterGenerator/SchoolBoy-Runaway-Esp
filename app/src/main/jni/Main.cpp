@@ -24,7 +24,7 @@
 #include "KittyMemory/MemoryPatch.h"
 #include "Menu.h"
 
-#include "ESP/hooks.h"
+#include "ESP/Hooks.h"
 #include "ESP/Drawing.h"
 #include "ESP/ESPManager.h"
 
