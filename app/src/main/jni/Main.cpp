@@ -22,7 +22,7 @@
 #include "Includes/Strings.h"
 
 #include "KittyMemory/MemoryPatch.h"
-#include "menu.h"
+#include "Menu.h"
 
 #include "ESP/hooks.h"
 #include "ESP/Drawing.h"
