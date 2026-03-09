@@ -10,6 +10,9 @@
 #include <iostream>
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
+#include <GLES3/gl3.h>
+#include <GLES3/gl31.h>
+#include <GLES3/gl32.h>
 #include "Unity/Vector2.h"
 #include "Unity/Vector3.h"
 #include "Unity/Rect.h"
@@ -18,16 +21,18 @@
 #include "Includes/Logger.h"
 #include "Includes/obfuscate.h"
 #include "Includes/Utils.h"
+#include "Includes/Chams.h"
 #include "Includes/MonoString.h"
 #include "Includes/Strings.h"
-
 #include "KittyMemory/MemoryPatch.h"
+
 #include "Menu.h"
 
 #include "ESP/Hooks.h"
 #include "ESP/Drawing.h"
 #include "ESP/ESPManager.h"
 
+//Target lib here
 #define targetLibName OBFUSCATE("libil2cpp.so")
 
 ESPManager *espManager;
@@ -37,7 +42,7 @@ NepEsp es;
 #include <Substrate/CydiaSubstrate.h>
 
 bool ESP, ESPLine, ESPBox;
-
+bool chams, wireframe, glow, outline, rainbow = false;
 float width = 1.0f;
 Color color = Color::White();
 
@@ -164,10 +169,12 @@ void *hack_thread(void *) {
     do {
         il2cppMap = KittyMemory::getLibraryMap("libil2cpp.so");
         sleep(1);
-    } while (!isLibraryLoaded("libil2cpp.so"));
+    } while (!il2cppMap.isValid() && mlovinit());
     espManager = new ESPManager();
-    
-    //Check if target lib is loaded
+    setShader("_OFF");
+    LogShaders();
+    Wallhack();
+
     do {
         sleep(1);
     } while (!isLibraryLoaded(targetLibName)); //dont forget to change this, if you change your lib
@@ -187,13 +194,23 @@ extern "C" {
     Java_uk_lgl_modmenu_FloatingModMenuService_getFeatureList(JNIEnv *env, jobject context) {
         jobjectArray ret;
         const char *features[] = {
-            
-            "100_Toggle_Enable Esp",
-            "200_Toggle_Esp Line",
-            "300_Toggle_Esp Box",
-            "400_RadioButton__Top,Center,Down",
-            
-        };
+            OBFUSCATE("Collapse_Esp Menu"), //Not Counted
+            OBFUSCATE("1_CollapseAdd_Toggle_Enable Esp"), //1 Case
+            OBFUSCATE("2_CollapseAdd_Toggle_Esp Line"), //2 Case
+            OBFUSCATE("3_CollapseAdd_Toggle_Esp Box"), //3 Case
+            OBFUSCATE("4_CollapseAdd_RadioButton__Top,Center,Down"), //4 Case
+            OBFUSCATE("Collapse_Chams Menu"), //Not Counted
+            OBFUSCATE("5_CollapseAdd_CheckBox_Default Chams"), //5 Case
+            OBFUSCATE("6_CollapseAdd_CheckBox_Wireframe Chams"), //6 Case
+            OBFUSCATE("7_CollapseAdd_CheckBox_Glow Chams"), //7 Case
+            OBFUSCATE("8_CollapseAdd_CheckBox_Outline Chams"), //8 Case
+            OBFUSCATE("9_CollapseAdd_CheckBox_Rainbow Chams"), //9 Case
+            OBFUSCATE("10_CollapseAdd_SeekBar_Line Width_0_10"), //10 Case
+            OBFUSCATE("11_CollapseAdd_SeekBar_Color Red_0_255"), //11 Case
+            OBFUSCATE("12_CollapseAdd_SeekBar_Color Green_0_255"), //12 Case
+            OBFUSCATE("13_CollapseAdd_SeekBar_Color Blue_0_255"), //13 Case
+            OBFUSCATE("14_CollapseAdd_Spinner_Select Chams Shader_None (Default),Shader 1,Shader 2,Shader 3,Shader 4,Shader 5,Shader 6,Shader 7,Shader 8,Shader 9,Shader 10,Shader 11,Shader 12,Shader 13,Shader 14,Shader 15, Shader 16, Shader 17, Shader 18, Shader 19"),
+			};
         int Total_Feature = (sizeof features / sizeof features[0]);
         ret = (jobjectArray)
         env->NewObjectArray(Total_Feature, env->FindClass(OBFUSCATE("java/lang/String")),
@@ -211,30 +228,144 @@ extern "C" {
         jboolean boolean, jstring str) {
 
         switch (featNum) {
-        
-        case 100:
-        ESP = boolean;
-        break;
-        
-        case 200:
-        ESPLine = boolean;
-        break;
-        
-        case 300:
-        ESPBox = boolean;
-        break;
-        
-        case 400:
-        patches.setLinePosition = value;
-        break;
-		
-        }
+
+        case 1:
+            ESP = boolean;
+            break;
+
+        case 2:
+            ESPLine = boolean;
+            break;
+
+        case 3:
+            ESPBox = boolean;
+            break;
+
+        case 4:
+            patches.setLinePosition = value;
+            break;
+
+        case 5:
+            chams = boolean;
+            if (chams) {
+                SetWallhack(boolean);
+            }
+            break;
+
+        case 6:
+            wireframe = boolean;
+            if (wireframe) {
+                SetWallhackW(boolean);
+            }
+            break;
+
+        case 7:
+            glow = boolean;
+            if (glow) {
+                SetWallhackG(boolean);
+            }
+            break;
+
+        case 8:
+            outline = boolean;
+            if (outline) {
+                SetWallhackO(boolean);
+            }
+            break;
+
+        case 9:
+            rainbow = boolean;
+            if (rainbow) {
+                SetRainbow1(boolean);
+            }
+            break;
+
+        case 10:
+            SetW(value);
+            break;
+
+        case 11:
+            SetR(value);
+            break;
+
+        case 12:
+            SetG(value);
+            break;
+
+        case 13:
+            SetB(value);
+            break;
+
+        case 14:
+            switch (value) {
+                case 0:
+                    setShader("Off");
+                    break;
+                case 1:
+                    setShader("_MainTex");
+                    break;
+                case 2:
+                    setShader("_MainTex_ST");
+                    break;
+                case 3:
+                    setShader("hlslcc_mtx4x4unity_MatrixVP[0]");
+                    break;
+                case 4:
+                    setShader("hlslcc_mtx4x4unity_WorldToObject[0]");
+                    break;
+                case 5:
+                    setShader("hlslcc_mtx4x4unity_ObjectToWorld[0]");
+                    break;
+                case 6:
+                    setShader("_Color");
+                    break;
+                case 7:
+                    setShader("_MainTex_ST");
+                    break;
+                case 8:
+                    setShader("hlslcc_mtx4x4unity_MatrixVP[0]");
+                    break;
+                case 9:
+                    setShader("hlslcc_mtx4x4unity_WorldToObject[0]");
+                    break;
+                case 10:
+                    setShader("_WorldSpaceCameraPos[0]");
+                    break;
+                case 11:
+                    setShader("unity_FogParams");
+                    break;
+                case 12:
+                    setShader("hlslcc_mtx4x4unity_MatrixV[0]");
+                    break;
+                case 13:
+                    setShader("_EmisColor");
+                    break;
+                case 14:
+                    setShader("_Cube");
+                    break;
+                case 15:
+                    setShader("_BumpMap");
+                    break;
+                case 16:
+                    setShader("unity_WorldTransformParams");
+                    break;
+                case 17:
+                    setShader("_Shininess");
+                    break;
+                case 18:
+                    setShader("unity_Lightmap");
+                    break;
+                case 19:
+                    setShader("_MainTex2_ST");
+                    break;
+            }
+            break;
     }
+}
 }
 
 __attribute__((constructor))
 void lib_main() {
-
     pthread_t ptid;
     pthread_create(&ptid, NULL, hack_thread, NULL);
 }
