@@ -1,11 +1,11 @@
 namespace Offset{
 enum {
 
-_position = 0x17F2960, // Transform -- get_position_injected
-_transform = 0x17E2BD8, // Component -- get_transform
-_main = 0x17B3F30, // Camera -- get_main
-_worldtoscreenpoint = 0x17B3948, // Camera -- worldtoscreenpoint_injected
-_dead = 0x14FCBFC, //get_IsAlive
+_position = 0x17E7978, // public class Transform : Component, IEnumerable -- get_position_injected
+_transform = 0x17D7BF0, // public class Component : Object -- get_transform
+_main = 0x17A9580, // public sealed class Camera : Behaviour -- get_main
+_worldtoscreenpoint = 0x17A8F98, // public sealed class Camera : Behaviour -- worldtoscreenpoint_injected
+_dead = 0x14F224C, //get_IsAlive
 
 };
 }
