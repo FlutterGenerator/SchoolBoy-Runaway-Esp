@@ -3,8 +3,8 @@
 
 [![License Info](https://img.shields.io/badge/License-GPL--3.0-blue.svg?style=flat-square)](https://github.com/FlutterGenerator/SchoolBoy-Runaway-Esp/blob/master/LICENSE)
 
-# SchoolBoy Runaway Version: (71) – 1.03
-**Google Play Release Date:** 10 December 2025
+# SchoolBoy Runaway Version: (72) – 1.04
+**Google Play Release Date:** 29 May 2026
 
 ![](img.jpg)
 
