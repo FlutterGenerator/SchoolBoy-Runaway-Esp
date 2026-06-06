@@ -9,11 +9,9 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Objects;
-
 import uk.lgl.R;
 
 public class MainActivity extends Activity {
@@ -50,25 +48,35 @@ public class MainActivity extends Activity {
     }
 
     public static void Start(final Context context) {
-        if (!Settings.canDrawOverlays(context)) {
-            context.startActivity(new Intent("android.settings.action.MANAGE_OVERLAY_PERMISSION",
-                    Uri.parse("package:" + context.getPackageName())));
-            final Handler handler = new Handler();
-            handler.postDelayed(() -> System.exit(1), 5000);
-            return;
-        } else {
-            final Handler handler = new Handler();
-            handler.postDelayed(() -> context.startService(new Intent(context, FloatingModMenuService.class)), 500);
-        }
-        cacheDir = context.getCacheDir().getPath() + "/";
+    if (!Settings.canDrawOverlays(context)) {
+        context.startActivity(new Intent("android.settings.action.MANAGE_OVERLAY_PERMISSION",
+                Uri.parse("package:" + context.getPackageName())));
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                System.exit(1);
+            }
+        }, 5000);
+        return;
+    } else {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                context.startService(new Intent(context, FloatingModMenuService.class));
+            }
+        }, 500);
+    }
+    cacheDir = context.getCacheDir().getPath() + "/";
 
-        writeToFile("OpenMenu.ogg", Sounds.OpenMenu());
-        writeToFile("Back.ogg", Sounds.Back());
-        writeToFile("Select.ogg", Sounds.Select());
-        writeToFile("SliderIncrease.ogg", Sounds.SliderIncrease());
-        writeToFile("SliderDecrease.ogg", Sounds.SliderDecrease());
-        writeToFile("On.ogg", Sounds.On());
-        writeToFile("Off.ogg", Sounds.Off());
+    writeToFile("OpenMenu.ogg", Sounds.OpenMenu());
+    writeToFile("Back.ogg", Sounds.Back());
+    writeToFile("Select.ogg", Sounds.Select());
+    writeToFile("SliderIncrease.ogg", Sounds.SliderIncrease());
+    writeToFile("SliderDecrease.ogg", Sounds.SliderDecrease());
+    writeToFile("On.ogg", Sounds.On());
+    writeToFile("Off.ogg", Sounds.Off());
     }
 
     private static void writeToFile(String name, String base64) {
