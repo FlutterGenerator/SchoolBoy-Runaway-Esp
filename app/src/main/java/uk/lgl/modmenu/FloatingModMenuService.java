@@ -931,15 +931,21 @@ public class FloatingModMenuService extends Service {
         rightParams.setMargins(dp(2), 0, dp(5), dp(5));
         rightButton.setLayoutParams(rightParams);
 
-        leftButton.setOnClickListener(v -> {
-            int currentPosition = spinner.getSelectedItemPosition();
-            if (currentPosition > 0) spinner.setSelection(currentPosition - 1);
-        });
+        leftButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					int currentPosition = spinner.getSelectedItemPosition();
+					if (currentPosition > 0) spinner.setSelection(currentPosition - 1);
+				}
+			});
 
-        rightButton.setOnClickListener(v -> {
-            int currentPosition = spinner.getSelectedItemPosition();
-            if (currentPosition < lists.size() - 1) spinner.setSelection(currentPosition + 1);
-        });
+		rightButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					int currentPosition = spinner.getSelectedItemPosition();
+					if (currentPosition < lists.size() - 1) spinner.setSelection(currentPosition + 1);
+				}
+			});
 
         mainLayout.addView(leftButton);
         mainLayout.addView(spinnerContainer);
